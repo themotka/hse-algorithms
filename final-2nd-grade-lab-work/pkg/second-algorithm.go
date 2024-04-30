@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"sort"
@@ -9,11 +9,11 @@ func MapAlgorithm(rectangles []Rectangle, coordinates []DotCoordinates) []int {
 	abscissa := make(map[int]struct{})
 	ordinate := make(map[int]struct{})
 	for _, rectangle := range rectangles {
-		abscissa[rectangle.leftLower.x] = struct{}{}
-		ordinate[rectangle.leftLower.y] = struct{}{}
+		abscissa[rectangle.LeftLower.X] = struct{}{}
+		ordinate[rectangle.LeftLower.Y] = struct{}{}
 
-		abscissa[rectangle.rightUpper.x] = struct{}{}
-		ordinate[rectangle.rightUpper.y] = struct{}{}
+		abscissa[rectangle.RightUpper.X] = struct{}{}
+		ordinate[rectangle.RightUpper.Y] = struct{}{}
 	}
 	zipX := make([]int, 0, len(abscissa))
 	zipY := make([]int, 0, len(ordinate))
@@ -30,11 +30,10 @@ func MapAlgorithm(rectangles []Rectangle, coordinates []DotCoordinates) []int {
 		mapCoords[i] = make([]int, len(zipY))
 	}
 	for _, rectangle := range rectangles {
-		startX := bound(zipX, rectangle.leftLower.x)
-		finX := bound(zipY, rectangle.rightUpper.x)
-
-		startY := bound(zipY, rectangle.leftLower.y)
-		finY := bound(zipY, rectangle.rightUpper.y)
+		startX := bound(zipX, rectangle.LeftLower.X)
+		finX := bound(zipY, rectangle.RightUpper.X)
+		startY := bound(zipY, rectangle.LeftLower.Y)
+		finY := bound(zipY, rectangle.RightUpper.Y)
 
 		for x := startX; x < finX; x++ {
 			for y := startY; y < finY; y++ {
@@ -43,25 +42,24 @@ func MapAlgorithm(rectangles []Rectangle, coordinates []DotCoordinates) []int {
 		}
 	}
 	for i, point := range coordinates {
-		x := bound(zipX, point.x)
+		x := bound(zipX, point.X)
 		if x == len(zipX) {
 			result[i] = 0
 			continue
 		}
-		if point.x < zipX[x] {
+		if point.X < zipX[x] {
 			x--
 			if x < 0 {
 				result[i] = 0
 				continue
 			}
 		}
-
-		y := bound(zipY, point.y)
+		y := bound(zipY, point.Y)
 		if y == len(zipY) {
 			result[i] = 0
 			continue
 		}
-		if point.y < zipY[y] {
+		if point.Y < zipY[y] {
 			y--
 			if y < 0 {
 				result[i] = 0

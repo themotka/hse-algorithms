@@ -1,4 +1,4 @@
-package main
+package pkg
 
 import (
 	"sort"
@@ -8,11 +8,11 @@ func PersistentSegmentTree(rectangles []Rectangle, coordinates []DotCoordinates)
 	abscissa := make(map[int]struct{})
 	ordinate := make(map[int]struct{})
 	for _, rectangle := range rectangles {
-		abscissa[rectangle.leftLower.x] = struct{}{}
-		ordinate[rectangle.leftLower.y] = struct{}{}
+		abscissa[rectangle.LeftLower.X] = struct{}{}
+		ordinate[rectangle.LeftLower.Y] = struct{}{}
 
-		abscissa[rectangle.rightUpper.x] = struct{}{}
-		ordinate[rectangle.rightUpper.y] = struct{}{}
+		abscissa[rectangle.RightUpper.X] = struct{}{}
+		ordinate[rectangle.RightUpper.Y] = struct{}{}
 	}
 	zipX := make([]int, 0, len(abscissa))
 	zipY := make([]int, 0, len(ordinate))
@@ -27,8 +27,8 @@ func PersistentSegmentTree(rectangles []Rectangle, coordinates []DotCoordinates)
 	nodes := segmentTree(rectangles, zipY)
 	ans := make([]int, len(coordinates))
 	for i, cord := range coordinates {
-		indX := search(zipX, cord.x)
-		indY := search(zipY, cord.y)
+		indX := search(zipX, cord.X)
+		indY := search(zipY, cord.Y)
 		if indX >= 0 && indY >= 0 {
 			ans[i] = count(nodes[indX], indY)
 		}
@@ -55,16 +55,16 @@ func segmentTree(rectangles []Rectangle, zipY []int) []*TreeNode {
 	ind := 0
 	for _, rect := range rectangles {
 		borders[ind] = RectBorder{
-			x:      rect.leftLower.x,
-			begY:   search(zipY, rect.leftLower.y),
-			endY:   search(zipY, rect.rightUpper.y),
+			x:      rect.LeftLower.X,
+			begY:   search(zipY, rect.LeftLower.Y),
+			endY:   search(zipY, rect.RightUpper.Y),
 			border: 1,
 		}
 		ind++
 		borders[ind] = RectBorder{
-			x:      rect.rightUpper.x,
-			begY:   search(zipY, rect.leftLower.y),
-			endY:   search(zipY, rect.rightUpper.y),
+			x:      rect.RightUpper.X,
+			begY:   search(zipY, rect.LeftLower.Y),
+			endY:   search(zipY, rect.RightUpper.Y),
 			border: -1,
 		}
 		ind++

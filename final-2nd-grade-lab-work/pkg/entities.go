@@ -1,11 +1,11 @@
-package main
+package pkg
 
 type DotCoordinates struct {
-	x, y int
+	X, Y int
 }
 
 type Rectangle struct {
-	leftLower, rightUpper DotCoordinates
+	LeftLower, RightUpper DotCoordinates
 }
 
 type RectBorder struct {

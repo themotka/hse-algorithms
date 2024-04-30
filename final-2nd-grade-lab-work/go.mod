@@ -1,4 +1,4 @@
-module example.com/sec-grade1
+module themotka/hse-algorithms/final-2nd-grade-lab-work
 
 go 1.22.2
 
